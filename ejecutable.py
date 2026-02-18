@@ -86,8 +86,18 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Imágenes → PDF (página completa)")
-        self.geometry("720x260")
+        self.geometry("720x340")
         self.resizable(False, False)
+        
+        # Colores modernos
+        self.bg_color = "#1e293b"  # Azul oscuro
+        self.fg_color = "#f8fafc"  # Blanco suave
+        self.accent_color = "#3b82f6"  # Azul brillante
+        self.secondary_bg = "#334155"  # Gris azulado
+        self.button_color = "#10b981"  # Verde moderno
+        self.button_hover = "#059669"  # Verde oscuro
+        
+        self.configure(bg=self.bg_color)
 
         self.input_dir = tk.StringVar(value="")
         self.output_pdf = tk.StringVar(value="")
@@ -98,48 +108,169 @@ class App(tk.Tk):
     def _build_ui(self):
         pad = 10
 
-        title = tk.Label(self, text="Convertir carpeta de imágenes a 1 PDF", font=("Segoe UI", 14, "bold"))
-        title.pack(pady=(12, 6))
+        # Título principal con gradiente visual
+        title_frame = tk.Frame(self, bg=self.accent_color, height=60)
+        title_frame.pack(fill="x", pady=0)
+        title_frame.pack_propagate(False)
+        
+        title = tk.Label(
+            title_frame, 
+            text="📄 Convertir imágenes a PDF", 
+            font=("Segoe UI", 16, "bold"),
+            bg=self.accent_color,
+            fg="white"
+        )
+        title.pack(expand=True)
 
-        frm = tk.Frame(self)
-        frm.pack(fill="x", padx=pad, pady=6)
+        # Frame principal con fondo
+        frm = tk.Frame(self, bg=self.bg_color)
+        frm.pack(fill="both", expand=True, padx=pad, pady=10)
 
         # Carpeta imágenes
-        row1 = tk.Frame(frm)
-        row1.pack(fill="x", pady=6)
-        tk.Label(row1, text="Carpeta de imágenes:", width=18, anchor="w").pack(side="left")
-        tk.Entry(row1, textvariable=self.input_dir).pack(side="left", fill="x", expand=True, padx=(0, 8))
-        tk.Button(row1, text="Elegir...", command=self.pick_folder, width=12).pack(side="left")
+        row1 = tk.Frame(frm, bg=self.bg_color)
+        row1.pack(fill="x", pady=8)
+        tk.Label(
+            row1, 
+            text="📁 Carpeta de imágenes:", 
+            width=20, 
+            anchor="w",
+            bg=self.bg_color,
+            fg=self.fg_color,
+            font=("Segoe UI", 10)
+        ).pack(side="left")
+        tk.Entry(
+            row1, 
+            textvariable=self.input_dir,
+            bg=self.secondary_bg,
+            fg=self.fg_color,
+            insertbackground=self.fg_color,
+            relief="flat",
+            font=("Segoe UI", 9)
+        ).pack(side="left", fill="x", expand=True, padx=(0, 8), ipady=4)
+        tk.Button(
+            row1, 
+            text="Elegir...", 
+            command=self.pick_folder, 
+            width=12,
+            bg=self.accent_color,
+            fg="white",
+            relief="flat",
+            cursor="hand2",
+            font=("Segoe UI", 9, "bold")
+        ).pack(side="left")
 
         # Salida PDF
-        row2 = tk.Frame(frm)
-        row2.pack(fill="x", pady=6)
-        tk.Label(row2, text="Guardar PDF en:", width=18, anchor="w").pack(side="left")
-        tk.Entry(row2, textvariable=self.output_pdf).pack(side="left", fill="x", expand=True, padx=(0, 8))
-        tk.Button(row2, text="Elegir...", command=self.pick_output, width=12).pack(side="left")
+        row2 = tk.Frame(frm, bg=self.bg_color)
+        row2.pack(fill="x", pady=8)
+        tk.Label(
+            row2, 
+            text="💾 Guardar PDF en:", 
+            width=20, 
+            anchor="w",
+            bg=self.bg_color,
+            fg=self.fg_color,
+            font=("Segoe UI", 10)
+        ).pack(side="left")
+        tk.Entry(
+            row2, 
+            textvariable=self.output_pdf,
+            bg=self.secondary_bg,
+            fg=self.fg_color,
+            insertbackground=self.fg_color,
+            relief="flat",
+            font=("Segoe UI", 9)
+        ).pack(side="left", fill="x", expand=True, padx=(0, 8), ipady=4)
+        tk.Button(
+            row2, 
+            text="Elegir...", 
+            command=self.pick_output, 
+            width=12,
+            bg=self.accent_color,
+            fg="white",
+            relief="flat",
+            cursor="hand2",
+            font=("Segoe UI", 9, "bold")
+        ).pack(side="left")
 
         # DPI fallback (opcional)
-        row3 = tk.Frame(frm)
-        row3.pack(fill="x", pady=6)
-        tk.Label(row3, text="DPI si no viene:", width=18, anchor="w").pack(side="left")
-        tk.Spinbox(row3, from_=72, to=600, textvariable=self.dpi_fallback, width=10).pack(side="left")
-        tk.Label(row3, text="(afecta tamaño de impresión, no la calidad visual)", fg="gray").pack(side="left", padx=10)
+        row3 = tk.Frame(frm, bg=self.bg_color)
+        row3.pack(fill="x", pady=8)
+        tk.Label(
+            row3, 
+            text="⚙️ DPI si no viene:", 
+            width=20, 
+            anchor="w",
+            bg=self.bg_color,
+            fg=self.fg_color,
+            font=("Segoe UI", 10)
+        ).pack(side="left")
+        tk.Spinbox(
+            row3, 
+            from_=72, 
+            to=600, 
+            textvariable=self.dpi_fallback, 
+            width=10,
+            bg=self.secondary_bg,
+            fg=self.fg_color,
+            buttonbackground=self.accent_color,
+            relief="flat",
+            font=("Segoe UI", 9)
+        ).pack(side="left")
+        tk.Label(
+            row3, 
+            text="(afecta tamaño de impresión, no la calidad visual)", 
+            fg="#94a3b8",
+            bg=self.bg_color,
+            font=("Segoe UI", 8, "italic")
+        ).pack(side="left", padx=10)
 
         # Botones
-        row4 = tk.Frame(self)
-        row4.pack(fill="x", padx=pad, pady=(10, 0))
+        row4 = tk.Frame(frm, bg=self.bg_color)
+        row4.pack(fill="x", pady=(10, 0))
 
-        self.btn_run = tk.Button(row4, text="Crear PDF", command=self.run, width=16, height=2)
+        self.btn_run = tk.Button(
+            row4, 
+            text="✨ Crear PDF", 
+            command=self.run, 
+            width=18, 
+            height=2,
+            bg=self.button_color,
+            fg="white",
+            relief="flat",
+            cursor="hand2",
+            font=("Segoe UI", 11, "bold")
+        )
         self.btn_run.pack(side="right")
 
-        self.status = tk.Label(self, text="Listo.", anchor="w", fg="gray")
-        self.status.pack(fill="x", padx=pad, pady=(8, 0))
+        self.status = tk.Label(
+            frm, 
+            text="✓ Listo para comenzar", 
+            anchor="w", 
+            fg="#94a3b8",
+            bg=self.bg_color,
+            font=("Segoe UI", 9)
+        )
+        self.status.pack(fill="x", pady=(8, 0))
+        
+        # Footer con información del desarrollador
+        footer = tk.Frame(self, bg=self.secondary_bg, height=45)
+        footer.pack(side="bottom", fill="x")
+        footer.pack_propagate(False)
+        
+        dev_info = tk.Label(
+            footer,
+            text="Desarrollador: William Martínez  |  GitHub: Pendragon503",
+            bg=self.secondary_bg,
+            fg="#94a3b8",
+            font=("Segoe UI", 9)
+        )
+        dev_info.pack(expand=True)
 
     def pick_folder(self):
         folder = filedialog.askdirectory(title="Selecciona la carpeta de imágenes")
         if folder:
             self.input_dir.set(folder)
-            self.status.config(text=f"Carpeta seleccionada: {folder}")
+            self.status.config(text=f"📁 Carpeta seleccionada: {folder}", fg="#10b981")
 
             # Si todavía no eligió salida, proponemos un nombre
             if not self.output_pdf.get():
@@ -154,7 +285,7 @@ class App(tk.Tk):
         )
         if path:
             self.output_pdf.set(path)
-            self.status.config(text=f"Salida seleccionada: {path}")
+            self.status.config(text=f"💾 Salida seleccionada: {path}", fg="#10b981")
 
     def run(self):
         input_dir = self.input_dir.get().strip()
@@ -176,16 +307,16 @@ class App(tk.Tk):
 
         try:
             self.btn_run.config(state="disabled")
-            self.status.config(text="Creando PDF...")
+            self.status.config(text="⏳ Creando PDF...", fg="#f59e0b")
             self.update_idletasks()
 
             convert_folder_to_pdf(input_dir, output_pdf, dpi_fallback=int(self.dpi_fallback.get()))
 
-            self.status.config(text=f"PDF creado: {output_pdf}")
+            self.status.config(text=f"✓ PDF creado: {output_pdf}", fg="#10b981")
             messagebox.showinfo("Listo", f"PDF creado correctamente:\n{output_pdf}")
 
         except Exception as e:
-            self.status.config(text="Error.")
+            self.status.config(text=f"❌ Error: {str(e)}", fg="#ef4444")
             messagebox.showerror("Error", str(e))
         finally:
             self.btn_run.config(state="normal")
